@@ -6,6 +6,7 @@ import Signin from './signin/Singin'
 import Signup from './signup/Signup'
 import { BrowserRouter, Routes, Route } from "react-router";
 import Home from "./home/Home.jsx"
+import ListChat from './mainPage/ListChat.jsx'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -20,7 +21,7 @@ function App() {
       
       </Route>
       <Route path="signup" element={<Signup/>} />
-
+      <Route path='chatList' element={<ListChat/>}/>
     </Routes>
   </BrowserRouter>
     </>
