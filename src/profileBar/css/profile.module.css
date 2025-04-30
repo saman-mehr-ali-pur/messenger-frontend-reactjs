@@ -1,0 +1,36 @@
+.bar{
+    display: flex;
+    flex-direction: row;
+    /* border: solid; */
+    width: 95%;
+    height: 10%;
+    border-bottom: solid;
+    border-width: 2px ;
+    border-color: #979797;
+    margin-left: 1%;
+    /* margin-right: 5%; */
+    /* background-color: rgb(187, 187, 188); */
+    /* border-radius: 50px; */
+}
+
+.img_container{
+
+    width: 10%;
+    height: 100%;
+    /* border: solid; */
+}
+
+.img{
+    width: 100%;
+    height: 100%;
+    /* height: inherit; */
+    /* border: solid; */
+    /* position: relative;
+    top: 10%; */
+}
+
+.username_bar{
+
+    font-size: 20px;
+
+}
