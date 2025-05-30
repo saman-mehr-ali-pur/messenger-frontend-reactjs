@@ -56,13 +56,15 @@ const ListChat = (props) =>{
     useEffect(()=>{
 
       const fetchRooms = async () => {
-        const request = new Request(`${serverUrl}/all_rooms`, {
+        const request = new Request(`${serverUrl}/room/all_rooms`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            
           },
           body: JSON.stringify({ userId: 1 }),
+          credentials: 'include',
         });
     
         try {
@@ -87,6 +89,11 @@ const ListChat = (props) =>{
             reconnectDelay: 5000, 
             heartbeatIncoming: 4000,
             heartbeatOutgoing: 4000,
+            connectHeaders:{
+               Authorization: localStorage.getItem("jwtToken"),
+               login : 1
+            },
+            debug: (str) => {console.log(str)}
         })
 
 
