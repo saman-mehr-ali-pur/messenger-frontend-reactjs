@@ -20,7 +20,7 @@ const Signup = ()=>{
                 alert("username is not available")
                 return false
             }
-        }
+        })
     }
 
     const handelSubmit = (e)=>{
@@ -34,14 +34,14 @@ const Signup = ()=>{
             alert("passwords do not match")
             return
         }
-        if (e.target[2].value.length < 3){
+        if (e.target[3].value.length < 3){
             alert("username is too short")
             return
         }
 
-        if (!checkAction(e.target[3].value) ){
-            return 
-        }
+        // if (!checkAction(e.target[3].value) ){
+        //     return 
+        // }
       
 
         let newUser = {
@@ -93,7 +93,7 @@ const Signup = ()=>{
             <form onSubmit={handelSubmit}>
                 <Field name="fist-name" type="text" message="fist name"/>
                 <Field name="last-name" type="text" message="last name"/>
-                <Field name="username" type="text" message="username" checkAction={checkAction} />
+                <Field name="username" type="text" message="username" />
                 <Field name="email" type="email" message="email"/>
                 <Field name="password" type="password" message="password"/>
                 <Field name="password" type="password" message="repeat password"/>

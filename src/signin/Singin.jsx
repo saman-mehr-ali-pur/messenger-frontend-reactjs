@@ -38,8 +38,9 @@ const Signin = (props) =>{
             .then((data) => {
                 console.log(data)
                 localStorage.setItem("jwtToken", data.token)
-                nav("/chatList")
-
+                setTimeout(() => {
+                    nav("/chatList")
+                }, 3000); // Wait for 3 seconds before navigating
             })
             .catch((err) => {
                 console.log(err)

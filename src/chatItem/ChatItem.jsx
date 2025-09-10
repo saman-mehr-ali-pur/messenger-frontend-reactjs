@@ -6,8 +6,9 @@ const ChatItem = (props) =>{
     return <>
 
         <div className={style.item}>
+            
             <img src={icon} alt="icon"  className={style.profile} />
-            <p>username</p>
+            <p>{props.name}</p>
         </div>
     </>
 }

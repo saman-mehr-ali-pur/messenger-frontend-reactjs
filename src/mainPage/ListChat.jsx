@@ -7,6 +7,8 @@ import { Client } from "@stomp/stompjs";
 import formatTimeToHHMM from "../util/getTime.js";
 import ContextMenu from "../contexMenu/ContexMenu.jsx";
 import sendIcon from "../assets/send.png"
+import SearchBar from "./SearchBar.jsx";
+import ResultSearchItem from "../resultSearch/ResultSearchItem.jsx";
 const ListChat = (props) =>{
 
     const serverUrl = "http://localhost:8080"
@@ -20,7 +22,12 @@ const ListChat = (props) =>{
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 }); 
     const selectedMessage = useRef(0)
     const [isEdit, setIsEdit] = useState(false)
+    const [selectedRoom,selectRoom] = useState()
+    const [resultSearch,setResultSearch] = useState(null)
+    const [isFocused,setFoucsed] = useState(false)
 
+
+    useEffect(() => { console.log(selectedRoom)},[selectRoom])
     const handleInput = (e) => {
       // console.log(e)
       setInput(e.target.value)
@@ -61,10 +68,11 @@ const ListChat = (props) =>{
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            "Authorization": localStorage.getItem("jwtToken")
             
           },
           body: JSON.stringify({ userId: 1 }),
-          credentials: 'include',
+          // credentials: 'include',
         });
     
         try {
@@ -174,6 +182,15 @@ const ListChat = (props) =>{
       }
     }
 
+
+    const handeOnclickResultSearch = (item,e) => {
+      e.stopPropagation();
+      // console.log(item)
+      selectRoom(item);       
+      setResultSearch(null);
+      setFoucsed(false);
+    }
+
     return <>
     
         <div className={style.frame} onClick={handelOutsideClick}>
@@ -187,15 +204,52 @@ const ListChat = (props) =>{
               messages={messages}
               setIsEdit={setIsEdit}
               />)}
-            <div className={style.chatList}>
-                <ChatItem/>
-                
-                <ChatItem/>
-
-            </div>
             
-            <div className={style.chat_container}>
-                <ProfileBar/>
+            <div>
+              
+              <SearchBar setFoucsed={setFoucsed} updateResult={setResultSearch}/>
+
+              {/* Dynamic window above the search bar for search results, only if searchbar is focused */}
+              {isFocused && (
+                <div style={{
+                  position: "absolute",
+                  top: "60px",
+                  left: "20px",
+                  width: "25%",
+                  background: "#fff",
+                  border: "1px solid #eee",
+                  borderRadius: "6px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                  zIndex: 100,
+                  padding: "8px",
+                  minHeight: "40px"
+                }}>
+                  {resultSearch && resultSearch.length > 0 ? (
+                    resultSearch.map((item, idx) => (
+                      <ResultSearchItem
+                        key={item.id || idx}
+                        avatar={item.profilePaths}
+                        name={item.username}
+                        description={item.description}
+                        onClickHandel={(e) => handeOnclickResultSearch(item,e)}
+                      />
+                    ))
+                  ) : (
+                    <div style={{ color: "#888", textAlign: "center", padding: "2%" , paddingBottom:"2%"}}>
+                      Nothing found
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className={style.chatList}>
+                {chatRooms.map(item=> {return <ChatItem name={item.roomName} />})}
+            </div></div>
+            
+            
+            
+            {(selectedRoom!=undefined) ?  <div className={style.chat_container}>
+                <ProfileBar username={selectedRoom.username} avatar={selectedRoom.profilePaths}/>
 
          
             <div className={style.chatRoom}>
@@ -219,7 +273,7 @@ const ListChat = (props) =>{
 
             </div>
     
-            </div>
+            </div>: <></> }
                 
         </div>
 
