@@ -25,7 +25,7 @@ const ContextMenu = ({x, y,id,deleteAction,editAction,copy,setInput,messages,set
         console.log("left click delete: "+id.current)
 
         if (deleteAction){
-            // deleteAction(id)
+            deleteAction(id)
         }
 
 

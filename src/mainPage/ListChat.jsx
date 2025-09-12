@@ -222,6 +222,19 @@ useEffect(() => {
           let messageBody = JSON.parse(message.body);
           console.log(messageBody)
 
+          if (messageBody.op!=undefined && messageBody.op=="delete" && messageBody.status==true){
+            
+            let newContext = {...messageContexRef.current};
+            newContext.chats = messageContexRef.current.chats.filter((item) => item.id != messageBody.id); 
+            setMessagesContex(newContext);
+            console.log(messageContex)
+            
+          }
+
+          if (messageBody.op!=undefined && messageBody.op=="delete" && messageBody.status==false){
+            return
+          }
+
           if (messageBody.status != undefined && messageBody.status == true) {
             
             setMessages((prev) => prev.map((item) => item.id == messageBody.id ? messageBody : item));
@@ -288,7 +301,7 @@ useEffect(() => {
 
     const editMessage = (id,newMessage) => {
       if (client && client.connected) {
-        let req = messages.find((item) => item.id == id);
+        let req = messageContexRef.current.chats.find((item) => item.id == id);
         req.message = newMessage;
         let respons = client.publish({
           destination:`/app/change`,
@@ -303,11 +316,9 @@ useEffect(() => {
       if (client && client.connected) {
         let respons = client.publish({
           destination:`/app/delete`,
-          body: JSON.stringify({ content: input }),
+          body: JSON.stringify({ id: id.current ,username: username.current }),
         });
-        if (respons) {
-            console.log(respons)
-        }
+        
       }
     }
 
@@ -333,7 +344,7 @@ useEffect(() => {
               deleteAction={deleteMessage}
               editAction={editMessage}
               setInput={setInput}
-              messages={messages}
+              messages={messageContexRef.current ? messageContexRef.current.chats : []}
               setIsEdit={setIsEdit}
               />)}
             
