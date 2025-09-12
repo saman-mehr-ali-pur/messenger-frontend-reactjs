@@ -45,12 +45,14 @@ const Signup = ()=>{
       
 
         let newUser = {
-            fName: e.target[0].value,
-            lName: e.target[1].value,
+            firstName: e.target[0].value,
+            lastName: e.target[1].value,
             username: e.target[2].value,
             email: e.target[3].value,
             password: e.target[4].value,
         }
+
+        console.log(JSON.stringify(newUser))
         
         const req = new Request(url, {
             method: 'POST',

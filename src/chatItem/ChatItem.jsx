@@ -5,8 +5,8 @@ const ChatItem = (props) =>{
 
     return <>
 
-        <div className={style.item}>
-            
+        <div  className={style.item} onMouseDown={props.onClickHandel}
+>
             <img src={icon} alt="icon"  className={style.profile} />
             <p>{props.name}</p>
         </div>

@@ -11,14 +11,19 @@ const SearchBar = (props) =>{
         search(e.target.value)
     }
 
-    const search = (input) =>{
+    const search = async (input) =>{
+        let token=  await localStorage.getItem("jwtToken")
+
 
         let request2 = new Request(`${host}/user/search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
+                'Authorization': token
             },
+            // credentials: 'include'
+            
             body: JSON.stringify({ username: input.trim() })
         });
 
