@@ -407,9 +407,10 @@ useEffect(() => {
             {(selectedRoom!=undefined) ?  <div className={style.chat_container}>
                 <ProfileBar username={selectedRoom.username} avatar={selectedRoom.profilePaths}/>
 
+          
             {messageContex && messageContex.chats.length>0 ? 
-            
-            messageContex.chats.map(item => <Chat key={item.id} 
+            <div className={style.chatRoom_messages}>
+           { messageContex.chats.map(item => <Chat key={item.id} 
                 id={item.id}
                 text={item.message} 
                 time={formatTimeToHHMM(item.date)}
@@ -418,10 +419,10 @@ useEffect(() => {
                  editMessage={editMessage}
                  deleteMessage={deleteMessage}
                  selectedMessage={selectedMessage}
-                 />)
-            
+                 />)}
+            </div>
             :<></>}
-            <div className={style.chatRoom}>
+            <div className={style.chatRoom_input}>
               
                  <div className={style.input_container}>
                  <input type="text" placeholder="message ..." className={style.input} value={input} onChange={handleInput} onKeyDown={handleKeyDown} ></input>
