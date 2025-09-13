@@ -8,7 +8,7 @@ const ChatItem = (props) =>{
         <div  className={style.item} onMouseDown={props.onClickHandel}
 >
             <img src={icon} alt="icon"  className={style.profile} />
-            <p>{props.name}</p>
+            <p style={{"paddingLeft":"1%"}} >{props.name}</p>
         </div>
     </>
 }

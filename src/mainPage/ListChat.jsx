@@ -67,12 +67,24 @@ const ListChat = (props) =>{
 
             fetch(request)
             .then(response => {
+              // if (response.status === 404) {
+              //   setMessagesContex({chats: []});
+              //   return;
+              // }
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
               }
+              // console.log(response.body)
               return response.json();
             })
-            .then(data => {
+            .then(
+              data => {
+
+                if (data.id==null){
+                setMessagesContex({chats:[]})
+                return;
+              }
+
               console.log(data);
               setMessagesContex(data);
             })
@@ -288,11 +300,36 @@ useEffect(() => {
 
 
     const sendMessage = () => {
-      console.log("send message called "+ selectedRoom.id)
+      console.log(messageContexRef.current)
+      if (messageContexRef.current.id == undefined ){
+        let req = new Request(`${serverUrl}/messages-rest/get/${selectedRoom.id}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              "Authorization": localStorage.getItem("jwtToken")}              
+              ,
+          body: JSON.stringify({user1 :{username: username.current}, user2: {id: selectedRoom.id} })
+          
+        })
+
+
+        fetch(req).then((res) => {  
+          if (!res.ok){
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json()
+        }).then(data=>{
+          setMessagesContex(data);
+          return
+        }).catch((err)=>{
+          console.log(err)
+        })
+      }
       if (client && client.connected && input) {
         let respons = client.publish({
           destination:'/app/message',
-          body: JSON.stringify({ content: input , chatRoomid: selectedRoom.id , owner: username.current}),
+          body: JSON.stringify({ content: input , chatRoomid: selectedRoomRef.current.id , owner: username.current}),
         });
         // console.log(respons)
         setInput('');
@@ -305,7 +342,7 @@ useEffect(() => {
         req.message = newMessage;
         let respons = client.publish({
           destination:`/app/change`,
-          body: JSON.stringify({ content: JSON.stringify(req) }),
+          body: JSON.stringify({ content: JSON.stringify(req), username: username.current }),
         });
       }
       }
@@ -324,6 +361,7 @@ useEffect(() => {
 
 
     const handeOnclickResultSearch = (item) => {
+      console.log(item)
       selectRoom(item);
       setResultSearch(null);
       setFoucsed(false);
